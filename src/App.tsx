@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import api, { IDataRequest, IDataResponse } from './provider/api';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete'
 
 function App() {
   const [clientes, setClientes] = useState<any>([]);
+  const navigate = useNavigate();
 
   const colunas: GridColDef[] = [
     {
@@ -33,6 +36,19 @@ function App() {
     {
       field: 'telefone',
       headerName: 'Telefone'
+    },
+    {
+      field: "actions",
+      headerName: "",
+      renderCell: (params) =>
+        <>
+          <IconButton
+            size='small'
+            onClick={() => { }}
+          >
+            <DeleteIcon color='error' />
+          </IconButton>
+        </>
     }
   ]
 
@@ -46,6 +62,10 @@ function App() {
       setClientes(response.data)
     }
   };
+
+  useEffect(() => {
+    carregarClientes();
+  }, []);
 
   return (
     <div>
@@ -61,14 +81,16 @@ function App() {
         <DataGrid
           rows={clientes}
           columns={colunas}
-          checkboxSelection
-          pageSizeOptions={[2, 4, 15]}
+          pageSizeOptions={[5, 4, 15]}
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 2
+                pageSize: 5
               }
             }
+          }}
+          onRowDoubleClick={(param) => {
+            navigate(`/criarCliente/${param.id}`)
           }}
         />
       </div>

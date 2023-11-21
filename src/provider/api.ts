@@ -53,6 +53,46 @@ class Api implements IHttpClient<AxiosInstance> {
             }
         }
     }
+
+    async post(data: IDataRequest): Promise<IDataResponse> {
+        try {
+            let resp = await this.api.post(data.url, data.data, {
+                headers: data.headers || {}
+            });
+
+            return {
+                data: resp.data,
+                message: resp.data.message || 'OK',
+                statusCode: resp.status
+            }
+        } catch (e) {
+            return {
+                data: null,
+                message: "Erro",
+                statusCode: 500
+            }
+        }
+    }
+
+    async put(data: IDataRequest): Promise<IDataResponse> {
+        try {
+            let resp: AxiosResponse = await this.api.put(data.url, data.data, {
+                headers: data.headers || {},
+            });
+
+            return {
+                data: resp.data,
+                message: resp.data.message || 'OK',
+                statusCode: resp.status
+            }
+        } catch (e) {
+            return {
+                data: null,
+                message: "Erro",
+                statusCode: 500
+            }
+        }
+    }
 }
 
 // const api = new Api(`${process.env.REACT_URL_BACK_END}`)
