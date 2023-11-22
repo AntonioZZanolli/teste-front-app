@@ -44,7 +44,9 @@ function App() {
         <>
           <IconButton
             size='small'
-            onClick={() => { }}
+            onClick={() => {
+              deletarRegistro(Number(params.id))
+            }}
           >
             <DeleteIcon color='error' />
           </IconButton>
@@ -66,6 +68,18 @@ function App() {
   useEffect(() => {
     carregarClientes();
   }, []);
+
+  const deletarRegistro = async (id: number) => {
+    const request: IDataRequest = {
+      url: `/clientes/${id}`
+    }
+
+    const response: IDataResponse = await api.delete(request);
+    if (response.statusCode === 200) {
+      alert(`Registro ${id} deletado com sucesso`)
+      carregarClientes();
+    }
+  }
 
   return (
     <div>

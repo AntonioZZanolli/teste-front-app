@@ -93,6 +93,24 @@ class Api implements IHttpClient<AxiosInstance> {
             }
         }
     }
+
+    async delete(data: IDataRequest): Promise<IDataResponse> {
+        try {
+            let resp: AxiosResponse = await this.api.delete(data.url, data.data);
+
+            return {
+                data: resp.data,
+                message: "OK",
+                statusCode: resp.status
+            }
+        } catch (e) {
+            return {
+                data: null,
+                message: "Error",
+                statusCode: 500
+            }
+        }
+    }
 }
 
 // const api = new Api(`${process.env.REACT_URL_BACK_END}`)
